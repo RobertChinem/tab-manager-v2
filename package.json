@@ -1,0 +1,33 @@
+{
+    "name": "tab-manager-v2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack --config webpack/webpack.config.js && npm run build-tailwind",
+        "build-tailwind": "tailwindcss -i ./src/core/pages/style.css -o ./dist/style.css",
+        "prettier": "./node_modules/.bin/prettier --write \"src/**/*.{ts,tsx}\""
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-icons": "^4.9.0"
+    },
+    "devDependencies": {
+        "@rocketseat/eslint-config": "^2.2.2",
+        "@types/chrome": "^0.0.237",
+        "@types/react": "^18.2.8",
+        "@types/react-dom": "^18.2.4",
+        "copy-webpack-plugin": "^11.0.0",
+        "eslint": "^8.57.1",
+        "prettier": "^3.5.1",
+        "tailwindcss": "^3.3.2",
+        "ts-loader": "^9.4.3",
+        "typescript": "^5.0.4",
+        "webpack": "^5.84.1",
+        "webpack-cli": "^5.1.1"
+    }
+}

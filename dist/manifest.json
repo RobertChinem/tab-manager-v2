@@ -1,0 +1,33 @@
+{
+    "name": "Tab Manager v2",
+    "version": "0.0.1",
+    "description": "Tab Manager v2",
+    "manifest_version": 3,
+    "options_page": "options.html",
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "permissions": [
+        "tabs",
+        "tabGroups",
+        "storage",
+        "alarms",
+        "browserAction",
+        "commands",
+        "notifications"
+    ],
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Shift+Alt+Down",
+                "windows": "Shift+Alt+Down",
+                "mac": "Command+MacCtrl+Down"
+            }
+        }
+    },
+    "action": {
+        "default_title": "Popup and Content Script",
+        "default_popup": "popup.html"
+    }
+}
