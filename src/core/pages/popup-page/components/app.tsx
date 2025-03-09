@@ -33,13 +33,16 @@ const App = () => {
     const input = Utils.getInput(inputEl.id || '', page)
     if (input) {
       input.value = (inputEl.value as string) || ''
-      new Gateway()
-        .executeCustomProcedure({
-          procedure: selectedProcedure.procedure,
-          source: 'popup-page',
-          data: page,
-        })
-        .then(setPage)
+      setPage(() => {
+        new Gateway()
+          .executeCustomProcedure({
+            procedure: selectedProcedure.procedure,
+            source: 'popup-page',
+            data: page,
+          })
+          .then(setPage)
+        return { ...page }
+      })
     }
   }
 
@@ -72,9 +75,18 @@ const App = () => {
           source: 'popup-page',
           data: page,
         })
-        .then(setPage)
+        .then((newPage) => {
+          if (!Utils.compareObjects(page, newPage)) {
+            setPage(newPage)
+          }
+        })
     } else {
-      setPage({ sections: [] })
+      setPage((prev) => {
+        if (!Utils.compareObjects(prev, { sections: [] })) {
+          return { sections: [] }
+        }
+        return prev
+      })
     }
   }, [page, search, selectedProcedure])
 

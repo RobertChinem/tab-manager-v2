@@ -48,9 +48,9 @@ function Section({
 }): React.JSX.Element {
   return (
     <div className='flex flex-col gap-2'>
-      {elements.map((elementParams) => (
+      {elements.map((elementParams, index) => (
         <Element
-          key={JSON.stringify(elementParams)}
+          key={index}
           onInputChange={onInputChange}
           elementParams={elementParams}
         />
@@ -68,9 +68,9 @@ function Page({
 }): React.JSX.Element {
   return (
     <div className='flex flex-col gap-4'>
-      {sections.map((sectionParams) => (
+      {sections.map((sectionParams, index) => (
         <Section
-          key={JSON.stringify(sectionParams)}
+          key={index}
           onInputChange={onInputChange}
           sectionParams={sectionParams}
         />

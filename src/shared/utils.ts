@@ -22,4 +22,39 @@ function getInput(id: string, { sections }: UI.Page): UI.Input | null {
   return null
 }
 
-export { getDomainFromURL, getInput }
+function compareObjects(obj1: object, obj2: object): boolean {
+  const helper = (obj1: object, obj2: object): boolean => {
+    if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+      return false
+    }
+
+    for (const key in obj1) {
+      if (
+        typeof obj1[key as keyof typeof obj1] === 'object' &&
+        typeof obj2[key as keyof typeof obj2] === 'object'
+      ) {
+        if (
+          !helper(
+            obj1[key as keyof typeof obj1],
+            obj2[key as keyof typeof obj2],
+          )
+        ) {
+          return false
+        }
+      } else if (
+        obj1[key as keyof typeof obj1] !== obj2[key as keyof typeof obj2]
+      ) {
+        return false
+      }
+    }
+
+    return true
+  }
+
+  return helper(
+    JSON.parse(JSON.stringify(obj1)),
+    JSON.parse(JSON.stringify(obj2)),
+  )
+}
+
+export { getDomainFromURL, getInput, compareObjects }
