@@ -36,6 +36,10 @@ export default class MergeWindows implements CustomProcedure {
       tabsToMerge = [...tabsToMerge, ...tabs]
     }
 
-    return this.browserService.createWindow(tabsToMerge.map((t) => t.id))
+    let index = 0
+    const currentWindowId = await this.browserService.getCurrentWindowId()
+    for (const tab of tabsToMerge) {
+      await this.browserService.moveTab(tab.id, currentWindowId, index++)
+    }
   }
 }
