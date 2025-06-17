@@ -16,7 +16,9 @@ export default class ChromeService implements Browser.Service {
   }
 
   async getCurrentWindowId(): Promise<number> {
-    return chrome.windows.getCurrent().then(({ id }) => id || 0)
+    return chrome.tabs
+      .query({ currentWindow: true })
+      .then((tabs) => tabs[0]?.windowId || 0)
   }
 
   async createTabGroup(name: string, tabIds: number[]): Promise<void> {
