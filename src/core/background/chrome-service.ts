@@ -1,4 +1,5 @@
 import * as Browser from '../../shared/types/browser'
+import ContentActions from '../../shared/types/content-actions'
 
 export default class ChromeService implements Browser.Service {
   async getAllWindowIds(): Promise<number[]> {
@@ -11,7 +12,12 @@ export default class ChromeService implements Browser.Service {
     return chrome.tabs
       .query({ currentWindow: true })
       .then((tabs) =>
-        tabs.map((t) => ({ id: t.id || 0, url: t.url || '', index: t.index })),
+        tabs.map((t) => ({
+          id: t.id || 0,
+          windowId: t.windowId || 0,
+          url: t.url || '',
+          index: t.index
+        })),
       )
   }
 
@@ -30,7 +36,12 @@ export default class ChromeService implements Browser.Service {
     return chrome.tabs
       .query({ windowId: id })
       .then((tabs) =>
-        tabs.map((t) => ({ id: t.id || 0, url: t.url || '', index: t.index })),
+        tabs.map((t) => ({
+          id: t.id || 0,
+          windowId: t.windowId || 0,
+          url: t.url || '',
+          index: t.index
+        })),
       )
   }
 
@@ -53,5 +64,25 @@ export default class ChromeService implements Browser.Service {
 
   async ungroupTab(tabId: number): Promise<void> {
     await chrome.tabs.ungroup(tabId)
+  }
+
+  async focusTab(tabId: number, windowId: number): Promise<void> {
+    await chrome.tabs.update(tabId, { active: true })
+    await chrome.windows.update(windowId, { focused: true })
+  }
+
+  async invokeContentAction<T extends keyof ContentActions>(
+    tabId: number,
+    action: T,
+    ...params: Parameters<ContentActions[T]>): Promise<ReturnType<ContentActions[T]>> {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(tabId, { action, params }, (response) => {
+        if (chrome.runtime.lastError) {
+          reject(chrome.runtime.lastError)
+        } else {
+          resolve(response)
+        }
+      })
+    })
   }
 }

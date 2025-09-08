@@ -1,0 +1,1 @@
+(()=>{"use strict";chrome.runtime.onMessage.addListener(((e,n,t)=>("getInnerText"===e.action&&t({innerText:document.body.innerText}),!0)))})();

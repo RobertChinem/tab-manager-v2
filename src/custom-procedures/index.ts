@@ -1,6 +1,7 @@
 import * as Browser from '../shared/types/browser'
 import CustomProcedure from '../shared/types/custom-procedure'
 import ExtractTabsByDomain from './extract-tabs-by-domain'
+import FindTabByContent from './find-tab-by-content'
 import GroupTabsByDomain from './group-tabs-by-domain'
 import MergeWindows from './merge-windows'
 import SortTabsByDomain from './sort-tabs-by-domain'
@@ -11,6 +12,7 @@ export function getCustomProcedures(
 ): CustomProcedure[] {
   return [
     new ExtractTabsByDomain(browserService),
+    new FindTabByContent(browserService),
     new MergeWindows(browserService),
     new SortTabsByDomain(browserService),
     new GroupTabsByDomain(browserService),

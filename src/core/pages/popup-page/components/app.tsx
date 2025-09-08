@@ -67,6 +67,25 @@ const App = () => {
     }
   }
 
+  const handleClick = (id: string) => {
+    if (!selectedProcedure) {
+      return
+    }
+
+    new Gateway()
+      .executeCustomProcedure({
+        procedure: selectedProcedure.procedure,
+        source: 'popup-page',
+        data: {
+          ...page,
+          metadata: {
+            clickedId: id,
+          },
+        },
+      })
+      .then(() => window.close())
+  }
+
   useEffect(() => {
     if (search.length > 0 && !!selectedProcedure) {
       new Gateway()
@@ -134,7 +153,10 @@ const App = () => {
             </h1>
           </div>
           <div>
-            <BaseUI.Page onInputChange={handleInputChange} pageParams={page} />
+            <BaseUI.Page
+              onClick={handleClick}
+              onInputChange={handleInputChange}
+              pageParams={page} />
           </div>
         </div>
       )}
