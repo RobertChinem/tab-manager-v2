@@ -2,12 +2,22 @@ type Tab = {
   id: number
   url: string
   index: number
+  title?: string
+  windowId?: number
+}
+
+type TabMatch = {
+  pre: string
+  match: string
+  post: string
 }
 
 interface Service {
   getTabsFromCurrentWindow(): Promise<Tab[]>
 
   getTabsFromWindow(id: number): Promise<Tab[]>
+
+  getTabsFromAllWindows(): Promise<Tab[]>
 
   getCurrentWindowId(): Promise<number>
 
@@ -20,6 +30,14 @@ interface Service {
   createWindow(tabIds: number[]): Promise<void>
 
   ungroupTab(tabId: number): Promise<void>
+
+  findInTabs(
+    tabIds: number[],
+    term: string,
+    maxMatches: number,
+  ): Promise<Map<number, TabMatch[]>>
+
+  activateTab(tabId: number, windowId: number): Promise<void>
 }
 
-export { Tab, Service }
+export { Tab, TabMatch, Service }

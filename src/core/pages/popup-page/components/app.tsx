@@ -63,8 +63,39 @@ const App = () => {
             },
           },
         })
-        .then(() => window.close())
+        .then((newPage) => {
+          if (newPage.sections.length === 0) {
+            window.close()
+          } else {
+            setPage(newPage)
+          }
+        })
     }
+  }
+
+  const handleClick = (id: string) => {
+    if (!selectedProcedure) {
+      return
+    }
+
+    new Gateway()
+      .executeCustomProcedure({
+        procedure: selectedProcedure.procedure,
+        source: 'popup-page',
+        data: {
+          ...page,
+          metadata: {
+            clickedId: id,
+          },
+        },
+      })
+      .then((newPage) => {
+        if (newPage.sections.length === 0) {
+          window.close()
+        } else {
+          setPage(newPage)
+        }
+      })
   }
 
   useEffect(() => {
@@ -134,7 +165,11 @@ const App = () => {
             </h1>
           </div>
           <div>
-            <BaseUI.Page onInputChange={handleInputChange} pageParams={page} />
+            <BaseUI.Page
+              onInputChange={handleInputChange}
+              onClick={handleClick}
+              pageParams={page}
+            />
           </div>
         </div>
       )}

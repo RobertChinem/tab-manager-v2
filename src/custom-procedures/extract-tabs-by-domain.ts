@@ -33,7 +33,7 @@ export default class ExtractTabsByDomain implements CustomProcedure {
 
     if (pressedKeys.includes('Enter')) {
       await this.extractTabsByDomain(inputDomainValue)
-      return page
+      return { sections: [] }
     }
 
     return {
