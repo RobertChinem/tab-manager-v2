@@ -15,7 +15,11 @@
         "alarms",
         "browserAction",
         "commands",
-        "notifications"
+        "notifications",
+        "scripting"
+    ],
+    "host_permissions": [
+        "<all_urls>"
     ],
     "commands": {
         "_execute_action": {

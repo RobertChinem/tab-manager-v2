@@ -2,6 +2,11 @@ import React from 'react'
 import * as UI from '../../../../../shared/types/ui'
 import PlatformInput from '../input'
 
+type Handlers = {
+  onInputChange: (eventTarget: HTMLInputElement) => void
+  onClick: (id: string) => void
+}
+
 function Text({ text, className }: UI.Text): React.JSX.Element {
   return <p className={className}>{text}</p>
 }
@@ -10,7 +15,7 @@ function Input({
   onInputChange,
   inputParams: { id, placeholder, className, value },
 }: {
-  onInputChange: (eventTarget: HTMLInputElement) => void
+  onInputChange: Handlers['onInputChange']
   inputParams: UI.Input
 }): React.JSX.Element {
   return (
@@ -24,34 +29,55 @@ function Input({
   )
 }
 
-function Element({
-  onInputChange,
-  elementParams: { input, text },
+function Button({
+  onClick,
+  buttonParams: { id, text, className },
 }: {
-  onInputChange: (eventTarget: HTMLInputElement) => void
+  onClick: Handlers['onClick']
+  buttonParams: UI.Button
+}): React.JSX.Element {
+  return (
+    <button type='button' onClick={() => onClick(id)} className={className}>
+      <Text {...text} />
+    </button>
+  )
+}
+
+function Element({
+  handlers,
+  elementParams: { input, text, button },
+}: {
+  handlers: Handlers
   elementParams: UI.Element
 }): React.JSX.Element {
   return (
     <>
-      {!!input && <Input onInputChange={onInputChange} inputParams={input} />}
+      {!!input && (
+        <Input onInputChange={handlers.onInputChange} inputParams={input} />
+      )}
       {!!text && <Text {...text} />}
+      {!!button && <Button onClick={handlers.onClick} buttonParams={button} />}
     </>
   )
 }
 
 function Section({
-  onInputChange,
-  sectionParams: { elements },
+  handlers,
+  sectionParams: { elements, className },
 }: {
-  onInputChange: (eventTarget: HTMLInputElement) => void
+  handlers: Handlers
   sectionParams: UI.Section
 }): React.JSX.Element {
   return (
-    <div className='flex flex-col gap-2'>
+    <div
+      className={
+        className ? `flex flex-col gap-2 ${className}` : 'flex flex-col gap-2'
+      }
+    >
       {elements.map((elementParams, index) => (
         <Element
           key={index}
-          onInputChange={onInputChange}
+          handlers={handlers}
           elementParams={elementParams}
         />
       ))}
@@ -61,17 +87,20 @@ function Section({
 
 function Page({
   onInputChange,
+  onClick,
   pageParams: { sections },
 }: {
-  onInputChange: (eventTarget: HTMLInputElement) => void
+  onInputChange: Handlers['onInputChange']
+  onClick: Handlers['onClick']
   pageParams: UI.Page
 }): React.JSX.Element {
+  const handlers: Handlers = { onInputChange, onClick }
   return (
     <div className='flex flex-col gap-4'>
       {sections.map((sectionParams, index) => (
         <Section
           key={index}
-          onInputChange={onInputChange}
+          handlers={handlers}
           sectionParams={sectionParams}
         />
       ))}
@@ -79,4 +108,4 @@ function Page({
   )
 }
 
-export { Page, Section, Element, Input, Text }
+export { Page, Section, Element, Input, Text, Button }

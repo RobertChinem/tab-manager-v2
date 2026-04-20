@@ -3,6 +3,7 @@ import CustomProcedure from '../shared/types/custom-procedure'
 import ExtractTabsByDomain from './extract-tabs-by-domain'
 import GroupTabsByDomain from './group-tabs-by-domain'
 import MergeWindows from './merge-windows'
+import FindTabsByTerm from './find-tabs-by-term'
 import SortTabsByDomain from './sort-tabs-by-domain'
 import UngroupTabs from './ungroup-tabs'
 
@@ -15,5 +16,6 @@ export function getCustomProcedures(
     new SortTabsByDomain(browserService),
     new GroupTabsByDomain(browserService),
     new UngroupTabs(browserService),
+    new FindTabsByTerm(browserService),
   ]
 }
